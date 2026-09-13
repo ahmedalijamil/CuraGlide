@@ -1,4 +1,4 @@
-👤 Patient Mode
+Patient Mode
 Provide only information you are comfortable sharing.
 
 Age
