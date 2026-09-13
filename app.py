@@ -138,10 +138,10 @@ p, label, span {
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input {
-    background-color: rgba(255, 255, 255, 0.10) !important;
+    background-color: #000000 !important;
 
-    color: #FDE047 !important;
-    -webkit-text-fill-color: #FDE047 !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
 
     border: 1px solid rgba(150, 255, 245, 0.35) !important;
     border-radius: 10px;
@@ -150,11 +150,16 @@ p, label, span {
 .stTextInput input:focus,
 .stTextArea textarea:focus,
 .stNumberInput input:focus {
-    color: #FDE047 !important;
-    -webkit-text-fill-color: #FDE047 !important;
+    background-color: #000000 !important;
+
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
 
     border: 2px solid #5EEAD4 !important;
-    box-shadow: 0 0 12px rgba(94, 234, 212, 0.25);
+
+    box-shadow:
+        0 0 12px
+        rgba(94, 234, 212, 0.25);
 }
 
 /* Placeholder */
@@ -163,8 +168,6 @@ p, label, span {
     color: #B7D8D8 !important;
     opacity: 0.8 !important;
 }
-
-
 /* =========================
    SELECT BOXES
    ========================= */
