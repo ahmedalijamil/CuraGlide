@@ -1,4 +1,3 @@
-```python
 import urllib.parse
 
 import streamlit as st
@@ -557,31 +556,3 @@ elif st.session_state.page == "Case Lab":
                     )
                 )
             )
-```
-
-### One important thing
-
-This `app.py` **still requires**:
-
-```text
-core/patient_mode.py
-```
-
-with:
-
-```python
-render_patient_mode()
-```
-
-So **don't delete `patient_mode.py`**. Your previous crash was because that file was malformed, not because this `app.py` structure was wrong.
-
-Also, I removed the unused imports:
-
-```python
-from core.model import analyze_patient
-from core.safety import quick_safety_check
-```
-
-because `app.py` doesn't directly use them; Patient Mode should handle those internally.
-
-**Next step:** replace your current `app.py` with the version above, commit it, and then we'll fix `patient_mode.py` if Streamlit throws an error.
