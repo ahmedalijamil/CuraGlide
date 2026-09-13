@@ -533,6 +533,279 @@ elif st.session_state.page == "Hospital Finder":
 
             else:
 
+              ```python
+            else:
+
                 st.error(
                     result.get(
                         "error",
+                        "Unable to find hospitals."
+                    )
+                )
+
+
+# ==============================
+# CASE LAB
+# ==============================
+
+elif st.session_state.page == "Case Lab":
+
+    st.title("🧪 Case Lab")
+
+    st.write(
+        "Practice clinical-style reasoning through educational cases."
+    )
+
+    # ==========================
+    # GENERATE NEW CASE
+    # ==========================
+
+    if st.session_state.case is None:
+
+        st.subheader("Create a Case")
+
+        topic = st.selectbox(
+            "Medical topic",
+            [
+                "General Medicine",
+                "Cardiology",
+                "Respiratory",
+                "Neurology",
+                "Gastroenterology",
+                "Pediatrics",
+                "Emergency Medicine",
+            ]
+        )
+
+        difficulty = st.selectbox(
+            "Difficulty",
+            [
+                "Beginner",
+                "Intermediate",
+                "Advanced",
+            ]
+        )
+
+        case_type = st.selectbox(
+            "Case type",
+            [
+                "Diagnosis",
+                "Differential Diagnosis",
+                "Clinical Reasoning",
+            ]
+        )
+
+        custom_request = st.text_area(
+            "Optional custom request",
+            placeholder="Example: Create a case about a patient with chest pain..."
+        )
+
+        if st.button(
+            "🧪 Generate Case",
+            use_container_width=True
+        ):
+
+            with st.spinner("Generating educational case..."):
+
+                result = generate_case(
+                    topic=topic,
+                    difficulty=difficulty,
+                    case_type=case_type,
+                    custom_request=custom_request,
+                )
+
+            if result.get("success"):
+
+                st.session_state.case = result.get(
+                    "case"
+                )
+
+                st.session_state.conversation = []
+
+                st.session_state.review = None
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    result.get(
+                        "error",
+                        "Unable to generate case."
+                    )
+                )
+
+    # ==========================
+    # ACTIVE CASE
+    # ==========================
+
+    else:
+
+        case = st.session_state.case
+
+        st.subheader(
+            case.get(
+                "title",
+                "Clinical Case"
+            )
+        )
+
+        # Display case information
+        for key, value in case.items():
+
+            if key == "title":
+                continue
+
+            if value is None:
+                continue
+
+            label = key.replace(
+                "_",
+                " "
+            ).title()
+
+            st.markdown(
+                f"**{label}:**"
+            )
+
+            st.write(value)
+
+        st.divider()
+
+        # ======================
+        # STUDENT QUESTIONS
+        # ======================
+
+        st.subheader("💬 Ask About the Case")
+
+        question = st.text_area(
+            "Your question",
+            placeholder="Ask a question about the case...",
+            key="case_question"
+        )
+
+        if st.button(
+            "Ask Question",
+            use_container_width=True
+        ):
+
+            if not question.strip():
+
+                st.warning(
+                    "Please enter a question first."
+                )
+
+            else:
+
+                with st.spinner(
+                    "Thinking..."
+                ):
+
+                    answer = answer_student_question(
+                        case,
+                        question,
+                        st.session_state.conversation
+                    )
+
+                st.session_state.conversation.append(
+                    {
+                        "user": question,
+                        "assistant": answer,
+                    }
+                )
+
+                st.rerun()
+
+        # Display conversation
+        if st.session_state.conversation:
+
+            st.divider()
+
+            st.subheader("Conversation")
+
+            for message in st.session_state.conversation:
+
+                st.markdown(
+                    f"**You:** {message['user']}"
+                )
+
+                st.markdown(
+                    f"**Case Lab:** {message['assistant']}"
+                )
+
+                st.divider()
+
+        # ======================
+        # REASONING REVIEW
+        # ======================
+
+        st.subheader("🧠 Review Your Reasoning")
+
+        reasoning = st.text_area(
+            "Explain your reasoning",
+            placeholder=(
+                "What do you think is happening, "
+                "and why?"
+            ),
+            key="reasoning_input"
+        )
+
+        if st.button(
+            "🔍 Review Reasoning",
+            use_container_width=True
+        ):
+
+            if not reasoning.strip():
+
+                st.warning(
+                    "Please enter your reasoning first."
+                )
+
+            else:
+
+                with st.spinner(
+                    "Reviewing your reasoning..."
+                ):
+
+                    review = review_reasoning(
+                        case,
+                        reasoning
+                    )
+
+                st.session_state.review = review
+
+                st.rerun()
+
+        # Display review
+        if st.session_state.review:
+
+            st.divider()
+
+            st.subheader(
+                "📋 Reasoning Review"
+            )
+
+            st.write(
+                st.session_state.review
+            )
+
+        # ======================
+        # RESET CASE
+        # ======================
+
+        st.divider()
+
+        if st.button(
+            "🔄 Start New Case",
+            use_container_width=True
+        ):
+
+            st.session_state.case = None
+
+            st.session_state.conversation = []
+
+            st.session_state.review = None
+
+            st.rerun()
+```
+
