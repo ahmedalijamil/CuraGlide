@@ -3,10 +3,6 @@ import streamlit as st
 from core.model import analyze_patient
 
 
-# =================================================
-# PATIENT QUESTIONS
-# =================================================
-
 PATIENT_QUESTIONS = [
     {
         "key": "age",
@@ -80,10 +76,6 @@ PATIENT_QUESTIONS = [
 ]
 
 
-# =================================================
-# SESSION STATE
-# =================================================
-
 def initialize_patient_session():
 
     defaults = {
@@ -108,10 +100,6 @@ def reset_patient_mode():
     st.session_state.patient_analysis = None
     st.session_state.patient_analysis_error = None
 
-
-# =================================================
-# VALIDATION
-# =================================================
 
 def validate_answer(question, answer):
 
@@ -143,9 +131,154 @@ def validate_answer(question, answer):
     return True, ""
 
 
-# =================================================
-# PATIENT MODE
-# =================================================
+def get_urgency_level(analysis):
+
+    """
+    Detect the urgency level from the AI response.
+
+    This is intentionally flexible so it works with the
+    current model output without requiring changes to model.py.
+    """
+
+    if not analysis:
+        return "UNKNOWN"
+
+    text = analysis.upper()
+
+    # Highest priority first
+    if "EMERGENCY" in text:
+        return "EMERGENCY"
+
+    if (
+        "URGENT" in text
+        or "GET CHECKED SOON" in text
+        or "IMMEDIATE MEDICAL" in text
+    ):
+        return "URGENT"
+
+    if (
+        "NEEDS ATTENTION" in text
+        or "NEED ATTENTION" in text
+        or "CHECK SOON" in text
+        or "WORTH CHECKING SOON" in text
+    ):
+        return "SOON"
+
+    if (
+        "LOWER CONCERN" in text
+        or "LOW CONCERN" in text
+        or "ROUTINE" in text
+        or "MILD" in text
+    ):
+        return "LOW"
+
+    return "UNKNOWN"
+
+
+def display_urgency_banner(analysis):
+
+    urgency = get_urgency_level(analysis)
+
+    if urgency == "EMERGENCY":
+
+        st.error(
+            "🚨 EMERGENCY\n\n"
+            "This information suggests that urgent medical "
+            "attention may be needed."
+        )
+
+    elif urgency == "URGENT":
+
+        st.warning(
+            "🟠 URGENT — GET CHECKED SOON\n\n"
+            "Consider getting checked by a healthcare professional soon."
+        )
+
+    elif urgency == "SOON":
+
+        st.warning(
+            "🟡 NEEDS ATTENTION\n\n"
+            "This may be worth discussing with a healthcare professional."
+        )
+
+    elif urgency == "LOW":
+
+        st.success(
+            "🟢 LOWER CONCERN — WORTH CHECKING\n\n"
+            "Nothing in the available information suggests an immediate emergency, "
+            "but professional advice can still be useful."
+        )
+
+    else:
+
+        st.info(
+            "🔵 HEALTH INFORMATION\n\n"
+            "Review the information below and consider speaking with "
+            "a healthcare professional if you are concerned."
+        )
+
+
+def display_analysis_sections(analysis):
+
+    """
+    Adds visual section labels around common sections in the AI output.
+
+    The original AI text is preserved rather than rewritten.
+    """
+
+    if not analysis:
+        return
+
+    text = str(analysis).strip()
+
+    # Remove a duplicate urgency heading if the model included one.
+    lines = text.splitlines()
+
+    cleaned_lines = []
+
+    for line in lines:
+
+        stripped = line.strip()
+
+        if stripped.upper() in [
+            "EMERGENCY",
+            "URGENT",
+            "SOON",
+            "LOW",
+            "LOWER CONCERN",
+            "NEEDS ATTENTION"
+        ]:
+            continue
+
+        cleaned_lines.append(line)
+
+    text = "\n".join(cleaned_lines).strip()
+
+    # Section emoji replacements.
+    replacements = {
+        "WHY THIS URGENCY": "🚨 WHY THIS URGENCY",
+        "WHAT MIGHT BE HAPPENING": "🧠 WHAT MIGHT BE HAPPENING",
+        "WHAT TO DO": "✅ WHAT TO DO",
+        "WHAT YOU SHOULD DO": "✅ WHAT YOU SHOULD DO",
+        "WHAT TO MONITOR": "👀 WHAT TO MONITOR",
+        "MONITOR": "👀 MONITOR",
+        "WHEN TO GET HELP": "🏥 WHEN TO GET HELP",
+        "WHEN TO SEEK HELP": "🏥 WHEN TO SEEK HELP",
+        "IMPORTANT DISCLAIMER": "⚠️ IMPORTANT DISCLAIMER",
+        "DISCLAIMER": "⚠️ DISCLAIMER",
+        "NEXT STEPS": "➡️ NEXT STEPS",
+        "WARNING SIGNS": "🚨 WARNING SIGNS"
+    }
+
+    for old, new in replacements.items():
+
+        text = text.replace(
+            old,
+            new
+        )
+
+    st.markdown(text)
+
 
 def render_patient_mode():
 
@@ -159,23 +292,30 @@ def render_patient_mode():
 
     st.divider()
 
-    # =================================================
-    # ANALYSIS RESULT
-    # =================================================
+    # ---------------------------------------------------------
+    # FINAL ANALYSIS SCREEN
+    # ---------------------------------------------------------
 
     if st.session_state.patient_analysis:
 
         st.success("✅ CuraGlide analysis complete!")
 
+        analysis = st.session_state.patient_analysis
+
+        # Urgency banner
+        display_urgency_banner(analysis)
+
         st.markdown("## 🧠 AI Health Analysis")
 
-        st.markdown(
-            st.session_state.patient_analysis
-        )
+        # Display the AI analysis with section emojis
+        display_analysis_sections(analysis)
 
-        st.warning(
-            "⚠️ CuraGlide provides health information, "
-            "not a confirmed medical diagnosis."
+        st.divider()
+
+        st.info(
+            "⚠️ CuraGlide provides health information and guidance. "
+            "It does not replace a qualified healthcare professional "
+            "or provide a confirmed medical diagnosis."
         )
 
         if st.button(
@@ -188,13 +328,17 @@ def render_patient_mode():
 
         return
 
-    # =================================================
+    # ---------------------------------------------------------
     # ANALYSIS ERROR
-    # =================================================
+    # ---------------------------------------------------------
 
     if st.session_state.patient_analysis_error:
 
         st.error(
+            "❌ We couldn't complete the analysis."
+        )
+
+        st.warning(
             st.session_state.patient_analysis_error
         )
 
@@ -208,9 +352,9 @@ def render_patient_mode():
 
         return
 
-    # =================================================
-    # RUN AI ANALYSIS
-    # =================================================
+    # ---------------------------------------------------------
+    # START ANALYSIS
+    # ---------------------------------------------------------
 
     if st.session_state.patient_completed:
 
@@ -218,9 +362,13 @@ def render_patient_mode():
             "✅ Thank you! I've collected your information."
         )
 
-        st.markdown("## 🧠 Analyzing your information...")
+        st.markdown(
+            "## 🧠 Analyzing your information..."
+        )
 
-        with st.spinner("CuraGlide is analyzing..."):
+        with st.spinner(
+            "CuraGlide is analyzing your information..."
+        ):
 
             result = analyze_patient(
                 st.session_state.patient_answers
@@ -248,9 +396,9 @@ def render_patient_mode():
 
         return
 
-    # =================================================
-    # CURRENT QUESTION
-    # =================================================
+    # ---------------------------------------------------------
+    # QUESTION SCREEN
+    # ---------------------------------------------------------
 
     step = st.session_state.patient_step
 
@@ -270,9 +418,9 @@ def render_patient_mode():
         f"## {question_data['question']}"
     )
 
-    # =================================================
+    # ---------------------------------------------------------
     # QUESTION FORM
-    # =================================================
+    # ---------------------------------------------------------
 
     with st.form(
         key=f"patient_form_{step}",
@@ -342,18 +490,18 @@ def render_patient_mode():
                     use_container_width=True
                 )
 
-    # =================================================
-    # HANDLE PREVIOUS
-    # =================================================
+    # ---------------------------------------------------------
+    # PREVIOUS BUTTON
+    # ---------------------------------------------------------
 
     if previous_clicked:
 
         st.session_state.patient_step -= 1
         st.rerun()
 
-    # =================================================
-    # HANDLE NEXT
-    # =================================================
+    # ---------------------------------------------------------
+    # NEXT BUTTON
+    # ---------------------------------------------------------
 
     if next_clicked:
 
@@ -382,11 +530,11 @@ def render_patient_mode():
 
             st.rerun()
 
-    # =================================================
-    # RESTART
-    # =================================================
-
     st.write("")
+
+    # ---------------------------------------------------------
+    # RESTART
+    # ---------------------------------------------------------
 
     if st.button(
         "🔄 Restart health check",
