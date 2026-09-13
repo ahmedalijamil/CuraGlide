@@ -3,6 +3,7 @@ from core.model import analyze_patient
 from core.safety import quick_safety_check
 from core.hospital_finder import find_hospitals
 from core.case_lab import generate_case, answer_student_question, review_reasoning
+from core.patient_mode import render_patient_mode
 import urllib.parse
 
 st.set_page_config(page_title='CuraGlide',page_icon='🏥',layout='wide')
