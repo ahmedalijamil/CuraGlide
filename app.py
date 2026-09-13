@@ -1,4 +1,3 @@
-```python
 import urllib.parse
 import streamlit as st
 
@@ -537,4 +536,3 @@ elif st.session_state.page == "Hospital Finder":
                 st.error(
                     result.get(
                         "error",
-```
