@@ -25,22 +25,8 @@ if st.session_state.page=='Home':
     with b: st.markdown('### 📍 Hospital Finder'); st.write('Search for hospitals near a city or area and open directions.'); st.button('Find Hospitals',on_click=nav,args=('Hospital Finder',),use_container_width=True)
     with c: st.markdown('### 🧪 Case Lab'); st.write('Practice clinical reasoning using fictional educational cases.'); st.button('Open Case Lab',on_click=nav,args=('Case Lab',),use_container_width=True)
     st.info('CuraGlide does not provide confirmed diagnoses or emergency services.')
-
-elif st.session_state.page=='Patient Mode':
-    st.title('👤 Patient Mode'); st.caption('Provide only information you are comfortable sharing.')
-    with st.form('patient_form'):
-        c1,c2=st.columns(2)
-        age=c1.number_input('Age',1,120,18); gender=c2.text_input('Sex or gender (optional)')
-        weight=c1.number_input('Weight (kg)',1.0,500.0,60.0); height=c2.number_input('Height (cm)',30.0,300.0,170.0)
-        conditions=st.text_input('Existing medical conditions'); medications=st.text_input('Current/recent medications'); allergies=st.text_input('Allergies'); history=st.text_area('Important medical history'); symptoms=st.text_area('What symptoms or concerns are you experiencing?'); duration=st.text_input('How long have you had them?')
-        submitted=st.form_submit_button('Analyze',type='primary')
-    if submitted:
-        data=locals(); safety=quick_safety_check(symptoms); st.subheader('🚦 Safety guidance'); st.warning(safety['message']) if safety['level']=='URGENT ATTENTION' else st.info(safety['message'])
-        with st.spinner('CuraGlide is reviewing the information...'):
-            result=analyze_patient({k:data[k] for k in ['age','gender','weight','height','conditions','medications','allergies','history','symptoms','duration']})
-        if result['success']: st.markdown(result['analysis'])
-        else: st.error(result['error'])
-
+elif st.session_state.page == 'Patient Mode':
+    render_patient_mode()
 elif st.session_state.page=='Hospital Finder':
     st.title('📍 Hospital Finder'); st.caption('Searches public OpenStreetMap/Nominatim data. Results may be incomplete or unavailable.')
     location=st.text_input('Enter a city or area',placeholder='Example: Lahore, Pakistan')
