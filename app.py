@@ -138,35 +138,24 @@ p, label, span {
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input {
-    background-color:
-        rgba(255, 255, 255, 0.10) !important;
+    background-color: rgba(255, 255, 255, 0.10) !important;
 
-    /* ONLY CHANGE: typed input text color */
-    color: #38BDF8 !important;
-    -webkit-text-fill-color: #38BDF8 !important;
+    color: #FDE047 !important;
+    -webkit-text-fill-color: #FDE047 !important;
 
-    border:
-        1px solid
-        rgba(150, 255, 245, 0.35) !important;
-
+    border: 1px solid rgba(150, 255, 245, 0.35) !important;
     border-radius: 10px;
 }
 
 .stTextInput input:focus,
 .stTextArea textarea:focus,
 .stNumberInput input:focus {
-    color: #38BDF8 !important;
-    -webkit-text-fill-color: #38BDF8 !important;
+    color: #FDE047 !important;
+    -webkit-text-fill-color: #FDE047 !important;
 
-    border:
-        2px solid
-        #5EEAD4 !important;
-
-    box-shadow:
-        0 0 12px
-        rgba(94, 234, 212, 0.25);
+    border: 2px solid #5EEAD4 !important;
+    box-shadow: 0 0 12px rgba(94, 234, 212, 0.25);
 }
-
 
 /* Placeholder */
 
