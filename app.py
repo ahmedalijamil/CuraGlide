@@ -1,3 +1,4 @@
+```python
 import urllib.parse
 import streamlit as st
 
@@ -29,246 +30,237 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    /* =========================
-       MAIN BACKGROUND
-       ========================= */
-
-    .stApp {
-        background:
-            linear-gradient(
-                135deg,
-                #061A2B 0%,
-                #073B4C 45%,
-                #075E54 100%
-            );
-        color: #F5FFFF;
-    }
+/* =========================
+   MAIN BACKGROUND
+   ========================= */
 
-    .main {
-        background: transparent;
-    }
+.stApp {
+    background:
+        linear-gradient(
+            135deg,
+            #061A2B 0%,
+            #073B4C 45%,
+            #075E54 100%
+        );
+    color: #F5FFFF;
+}
+
+/* Main content */
 
+.main {
+    background: transparent;
+}
 
-    /* =========================
-       SIDEBAR
-       ========================= */
+
+/* =========================
+   SIDEBAR
+   ========================= */
+
+section[data-testid="stSidebar"] {
+    background:
+        linear-gradient(
+            180deg,
+            #041725 0%,
+            #063B45 55%,
+            #075E54 100%
+        );
+}
+
+section[data-testid="stSidebar"] * {
+    color: #F5FFFF !important;
+}
 
-    section[data-testid="stSidebar"] {
-        background:
-            linear-gradient(
-                180deg,
-                #041725 0%,
-                #063B45 55%,
-                #075E54 100%
-            );
-    }
 
-    section[data-testid="stSidebar"] * {
-        color: #F5FFFF !important;
-    }
+/* =========================
+   HEADINGS
+   ========================= */
 
+h1, h2, h3 {
+    color: #F5FFFF !important;
+    font-weight: 700;
+}
 
-    /* =========================
-       HEADINGS
-       ========================= */
+p, label, span {
+    color: #E8FFFF;
+}
 
-    h1, h2, h3 {
-        color: #F5FFFF !important;
-        font-weight: 700;
-    }
 
-    p, label, span {
-        color: #E8FFFF;
-    }
+/* =========================
+   BUTTONS
+   ========================= */
 
+.stButton > button {
+    background:
+        linear-gradient(
+            135deg,
+            #D62828,
+            #B91C1C
+        );
 
-    /* =========================
-       BUTTONS
-       ========================= */
+    color: white !important;
 
-    .stButton > button {
-        background:
-            linear-gradient(
-                135deg,
-                #D62828,
-                #B91C1C
-            ) !important;
+    border: 2px solid #FF6B6B;
 
-        color: white !important;
+    border-radius: 12px;
 
-        border: 2px solid #FF6B6B !important;
+    font-weight: 700;
 
-        border-radius: 12px !important;
+    padding: 0.65rem 1rem;
 
-        font-weight: 700 !important;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
 
-        padding: 0.65rem 1rem;
+.stButton > button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #EF4444,
+            #C81E1E
+        );
 
-        transition:
-            transform 0.15s ease,
-            box-shadow 0.15s ease,
-            background 0.15s ease;
-    }
+    transform: translateY(-2px);
 
-    .stButton > button:hover {
-        background:
-            linear-gradient(
-                135deg,
-                #EF4444,
-                #C81E1E
-            ) !important;
+    box-shadow:
+        0 8px 20px rgba(255, 80, 80, 0.35);
+}
 
-        transform: translateY(-2px);
+.stButton > button:active {
+    transform: translateY(0);
+}
 
-        box-shadow:
-            0 8px 20px rgba(255, 80, 80, 0.35);
-    }
 
-    .stButton > button:active {
-        transform: translateY(0);
-    }
+/* =========================
+   INPUT BOXES
+   ========================= */
 
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input {
+    background-color:
+        rgba(255, 255, 255, 0.10) !important;
 
-    /* =========================
-       INPUT BOXES
-       ========================= */
+    /* ONLY CHANGE: typed input text color */
+    color: #38BDF8 !important;
+    -webkit-text-fill-color: #38BDF8 !important;
 
-    .stTextInput input,
-    .stTextArea textarea,
-    .stNumberInput input {
+    border:
+        1px solid
+        rgba(150, 255, 245, 0.35) !important;
 
-        /* ACTUAL TEXT TYPED BY USER */
-        color: #38BDF8 !important;
+    border-radius: 10px;
+}
 
-        -webkit-text-fill-color: #38BDF8 !important;
+.stTextInput input:focus,
+.stTextArea textarea:focus,
+.stNumberInput input:focus {
+    color: #38BDF8 !important;
+    -webkit-text-fill-color: #38BDF8 !important;
 
-        background-color:
-            rgba(255, 255, 255, 0.10) !important;
+    border:
+        2px solid
+        #5EEAD4 !important;
 
-        border:
-            1px solid
-            rgba(150, 255, 245, 0.35) !important;
+    box-shadow:
+        0 0 12px
+        rgba(94, 234, 212, 0.25);
+}
 
-        border-radius: 10px;
-    }
 
+/* Placeholder */
 
-    /* Input while typing */
+::placeholder {
+    color: #B7D8D8 !important;
+    opacity: 0.8 !important;
+}
 
-    .stTextInput input:focus,
-    .stTextArea textarea:focus,
-    .stNumberInput input:focus {
 
-        color: #38BDF8 !important;
+/* =========================
+   SELECT BOXES
+   ========================= */
 
-        -webkit-text-fill-color: #38BDF8 !important;
+div[data-baseweb="select"] > div {
+    background-color:
+        rgba(255, 255, 255, 0.10);
 
-        border:
-            2px solid
-            #5EEAD4 !important;
+    border-color:
+        rgba(150, 255, 245, 0.35);
 
-        box-shadow:
-            0 0 12px
-            rgba(94, 234, 212, 0.25);
-    }
+    color: white;
+}
 
 
-    /* Placeholder */
+/* =========================
+   CARDS / CONTAINERS
+   ========================= */
 
-    .stTextInput input::placeholder,
-    .stTextArea textarea::placeholder,
-    .stNumberInput input::placeholder {
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background:
+        rgba(4, 31, 43, 0.55);
 
-        color: #94A3B8 !important;
+    border:
+        1px solid
+        rgba(94, 234, 212, 0.20);
 
-        opacity: 1 !important;
-    }
+    border-radius: 16px;
 
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.20);
+}
 
-    /* =========================
-       SELECT BOXES
-       ========================= */
 
-    div[data-baseweb="select"] > div {
-        background-color:
-            rgba(255, 255, 255, 0.10);
+/* =========================
+   DIVIDERS
+   ========================= */
 
-        border-color:
-            rgba(150, 255, 245, 0.35);
+hr {
+    border-color:
+        rgba(94, 234, 212, 0.25);
+}
 
-        color: white;
-    }
 
+/* =========================
+   PROGRESS BAR
+   ========================= */
 
-    /* =========================
-       CARDS / CONTAINERS
-       ========================= */
+div[data-testid="stProgress"] > div > div {
+    background:
+        linear-gradient(
+            90deg,
+            #14B8A6,
+            #5EEAD4
+        );
+}
 
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background:
-            rgba(4, 31, 43, 0.55);
 
-        border:
-            1px solid
-            rgba(94, 234, 212, 0.20);
+/* =========================
+   SUCCESS
+   ========================= */
 
-        border-radius: 16px;
+div[data-testid="stAlert"][data-baseweb="notification"] {
+    border-radius: 12px;
+}
 
-        box-shadow:
-            0 10px 30px
-            rgba(0, 0, 0, 0.20);
-    }
 
+/* =========================
+   LINKS
+   ========================= */
 
-    /* =========================
-       DIVIDERS
-       ========================= */
+a {
+    color: #5EEAD4 !important;
+}
 
-    hr {
-        border-color:
-            rgba(94, 234, 212, 0.25);
-    }
 
+/* =========================
+   CODE / MONOSPACE
+   ========================= */
 
-    /* =========================
-       PROGRESS BAR
-       ========================= */
-
-    div[data-testid="stProgress"] > div > div {
-        background:
-            linear-gradient(
-                90deg,
-                #14B8A6,
-                #5EEAD4
-            );
-    }
-
-
-    /* =========================
-       SUCCESS / ALERTS
-       ========================= */
-
-    div[data-testid="stAlert"][data-baseweb="notification"] {
-        border-radius: 12px;
-    }
-
-
-    /* =========================
-       LINKS
-       ========================= */
-
-    a {
-        color: #5EEAD4 !important;
-    }
-
-
-    /* =========================
-       CODE / MONOSPACE
-       ========================= */
-
-    code {
-        color: #99F6E4;
-    }
+code {
+    color: #99F6E4;
+}
 
 </style>
 """, unsafe_allow_html=True)
@@ -533,9 +525,6 @@ elif st.session_state.page == "Hospital Finder":
 
             else:
 
-              ```python
-            else:
-
                 st.error(
                     result.get(
                         "error",
@@ -555,10 +544,6 @@ elif st.session_state.page == "Case Lab":
     st.write(
         "Practice clinical-style reasoning through educational cases."
     )
-
-    # ==========================
-    # GENERATE NEW CASE
-    # ==========================
 
     if st.session_state.case is None:
 
@@ -605,7 +590,9 @@ elif st.session_state.page == "Case Lab":
             use_container_width=True
         ):
 
-            with st.spinner("Generating educational case..."):
+            with st.spinner(
+                "Generating educational case..."
+            ):
 
                 result = generate_case(
                     topic=topic,
@@ -635,10 +622,6 @@ elif st.session_state.page == "Case Lab":
                     )
                 )
 
-    # ==========================
-    # ACTIVE CASE
-    # ==========================
-
     else:
 
         case = st.session_state.case
@@ -650,7 +633,6 @@ elif st.session_state.page == "Case Lab":
             )
         )
 
-        # Display case information
         for key, value in case.items():
 
             if key == "title":
@@ -671,10 +653,6 @@ elif st.session_state.page == "Case Lab":
             st.write(value)
 
         st.divider()
-
-        # ======================
-        # STUDENT QUESTIONS
-        # ======================
 
         st.subheader("💬 Ask About the Case")
 
@@ -716,7 +694,6 @@ elif st.session_state.page == "Case Lab":
 
                 st.rerun()
 
-        # Display conversation
         if st.session_state.conversation:
 
             st.divider()
@@ -734,10 +711,6 @@ elif st.session_state.page == "Case Lab":
                 )
 
                 st.divider()
-
-        # ======================
-        # REASONING REVIEW
-        # ======================
 
         st.subheader("🧠 Review Your Reasoning")
 
@@ -776,7 +749,6 @@ elif st.session_state.page == "Case Lab":
 
                 st.rerun()
 
-        # Display review
         if st.session_state.review:
 
             st.divider()
@@ -788,10 +760,6 @@ elif st.session_state.page == "Case Lab":
             st.write(
                 st.session_state.review
             )
-
-        # ======================
-        # RESET CASE
-        # ======================
 
         st.divider()
 
@@ -808,4 +776,3 @@ elif st.session_state.page == "Case Lab":
 
             st.rerun()
 ```
-
