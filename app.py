@@ -1,4 +1,3 @@
-```python
 import urllib.parse
 import streamlit as st
 
@@ -775,4 +774,3 @@ elif st.session_state.page == "Case Lab":
             st.session_state.review = None
 
             st.rerun()
-```
