@@ -132,6 +132,24 @@ p, label, span {
 
 
 /* =========================
+   HOSPITAL DIRECTIONS BUTTON
+   ========================= */
+
+.stLinkButton > a {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #5EEAD4 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+}
+
+.stLinkButton > a:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+}
+
+
+/* =========================
    INPUT BOXES
    ========================= */
 
@@ -168,6 +186,8 @@ p, label, span {
     color: #B7D8D8 !important;
     opacity: 0.8 !important;
 }
+
+
 /* =========================
    SELECT BOXES
    ========================= */
