@@ -11,9 +11,9 @@ from core.hospital_finder import find_hospitals
 from core.patient_mode import render_patient_mode
 
 
-# --------------------------------------------------
+# =================================================
 # PAGE CONFIG
-# --------------------------------------------------
+# =================================================
 
 st.set_page_config(
     page_title="CuraGlide",
@@ -22,9 +22,9 @@ st.set_page_config(
 )
 
 
-# --------------------------------------------------
+# =================================================
 # SESSION STATE
-# --------------------------------------------------
+# =================================================
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
@@ -39,20 +39,22 @@ if "review" not in st.session_state:
     st.session_state.review = None
 
 
-# --------------------------------------------------
+# =================================================
 # NAVIGATION
-# --------------------------------------------------
+# =================================================
 
 def nav(page_name):
     st.session_state.page = page_name
 
 
-# --------------------------------------------------
+# =================================================
 # SIDEBAR
-# --------------------------------------------------
+# =================================================
 
 with st.sidebar:
+
     st.title("🏥 CuraGlide")
+
     st.caption(
         "Your well-being in every step — accessed from a single touch."
     )
@@ -65,10 +67,12 @@ with st.sidebar:
     ]
 
     for name, icon in pages:
+
         if st.button(
             f"{icon} {name}",
             use_container_width=True,
         ):
+
             nav(name)
             st.rerun()
 
@@ -80,9 +84,9 @@ with st.sidebar:
     )
 
 
-# --------------------------------------------------
+# =================================================
 # HOME
-# --------------------------------------------------
+# =================================================
 
 if st.session_state.page == "Home":
 
@@ -97,7 +101,9 @@ if st.session_state.page == "Home":
     col1, col2, col3 = st.columns(3)
 
     with col1:
+
         st.markdown("### 👤 Patient Mode")
+
         st.write(
             "Share symptoms and receive cautious "
             "AI-powered health-information guidance."
@@ -107,11 +113,14 @@ if st.session_state.page == "Home":
             "Start Patient Mode",
             use_container_width=True,
         ):
+
             nav("Patient Mode")
             st.rerun()
 
     with col2:
+
         st.markdown("### 📍 Hospital Finder")
+
         st.write(
             "Search for hospitals near a city or area "
             "and open directions."
@@ -121,11 +130,14 @@ if st.session_state.page == "Home":
             "Find Hospitals",
             use_container_width=True,
         ):
+
             nav("Hospital Finder")
             st.rerun()
 
     with col3:
+
         st.markdown("### 🧪 Case Lab")
+
         st.write(
             "Practice clinical reasoning using "
             "fictional educational cases."
@@ -135,6 +147,7 @@ if st.session_state.page == "Home":
             "Open Case Lab",
             use_container_width=True,
         ):
+
             nav("Case Lab")
             st.rerun()
 
@@ -146,18 +159,18 @@ if st.session_state.page == "Home":
     )
 
 
-# --------------------------------------------------
+# =================================================
 # PATIENT MODE
-# --------------------------------------------------
+# =================================================
 
 elif st.session_state.page == "Patient Mode":
 
     render_patient_mode()
 
 
-# --------------------------------------------------
+# =================================================
 # HOSPITAL FINDER
-# --------------------------------------------------
+# =================================================
 
 elif st.session_state.page == "Hospital Finder":
 
@@ -179,10 +192,15 @@ elif st.session_state.page == "Hospital Finder":
     ):
 
         if not location.strip():
-            st.warning("Please enter a city or area.")
+
+            st.warning(
+                "Please enter a city or area."
+            )
+
         else:
 
             with st.spinner("Searching..."):
+
                 result = find_hospitals(location)
 
             if not result.get("success"):
@@ -196,16 +214,26 @@ elif st.session_state.page == "Hospital Finder":
 
             else:
 
-                origin = result.get("origin", {})
+                origin = result.get(
+                    "origin",
+                    {}
+                )
 
                 st.success(
                     "Showing hospitals near "
-                    + origin.get("display_name", location)
+                    + origin.get(
+                        "display_name",
+                        location,
+                    )
                 )
 
-                hospitals = result.get("hospitals", [])
+                hospitals = result.get(
+                    "hospitals",
+                    []
+                )
 
                 if not hospitals:
+
                     st.info(
                         "No hospitals were found for this location."
                     )
@@ -213,7 +241,8 @@ elif st.session_state.page == "Hospital Finder":
                 for hospital in hospitals:
 
                     st.markdown(
-                        f"### 🏥 {hospital.get('name', 'Hospital')}"
+                        f"### 🏥 "
+                        f"{hospital.get('name', 'Hospital')}"
                     )
 
                     st.write(
@@ -224,31 +253,44 @@ elif st.session_state.page == "Hospital Finder":
                     )
 
                     if hospital.get("distance"):
-                        st.caption(hospital["distance"])
 
-                    latitude = hospital.get("latitude")
-                    longitude = hospital.get("longitude")
+                        st.caption(
+                            hospital["distance"]
+                        )
 
-                    if latitude is not None and longitude is not None:
+                    latitude = hospital.get(
+                        "latitude"
+                    )
+
+                    longitude = hospital.get(
+                        "longitude"
+                    )
+
+                    if (
+                        latitude is not None
+                        and longitude is not None
+                    ):
 
                         query = urllib.parse.quote_plus(
                             f"{latitude},{longitude}"
                         )
 
+                        maps_url = (
+                            "https://www.google.com/maps/"
+                            f"search/?api=1&query={query}"
+                        )
+
                         st.link_button(
                             "Open directions",
-                            (
-                                "https://www.google.com/maps/"
-                                f"search/?api=1&query={query}"
-                            ),
+                            maps_url,
                         )
 
                     st.divider()
 
 
-# --------------------------------------------------
+# =================================================
 # CASE LAB
-# --------------------------------------------------
+# =================================================
 
 elif st.session_state.page == "Case Lab":
 
@@ -303,7 +345,9 @@ elif st.session_state.page == "Case Lab":
 
         if not topic.strip():
 
-            st.warning("Please enter a topic.")
+            st.warning(
+                "Please enter a topic."
+            )
 
         else:
 
@@ -320,7 +364,9 @@ elif st.session_state.page == "Case Lab":
 
             if "error" in result:
 
-                st.error(result["error"])
+                st.error(
+                    result["error"]
+                )
 
             else:
 
@@ -334,9 +380,10 @@ elif st.session_state.page == "Case Lab":
 
                 st.rerun()
 
-    # ----------------------------------------------
+
+    # =================================================
     # DISPLAY CASE
-    # ----------------------------------------------
+    # =================================================
 
     case = st.session_state.case
 
@@ -388,13 +435,15 @@ elif st.session_state.page == "Case Lab":
         )
 
         for item in initial_information:
+
             st.write(
                 "• " + str(item)
             )
 
-        # ------------------------------------------
+
+        # =================================================
         # CONVERSATION
-        # ------------------------------------------
+        # =================================================
 
         for item in st.session_state.conversation:
 
@@ -404,21 +453,26 @@ elif st.session_state.page == "Case Lab":
 
             st.write(
                 "**Professor:** "
-                + item.get("a", "")
+                + item.get(
+                    "a",
+                    "",
+                )
             )
 
-        # ------------------------------------------
+
+        # =================================================
         # ASK PROFESSOR
-        # ------------------------------------------
+        # =================================================
 
         question = st.text_input(
             "Ask the professor a question",
             key="case_question",
         )
 
-        if st.button(
-            "Ask question"
-        ) and question.strip():
+        if (
+            st.button("Ask question")
+            and question.strip()
+        ):
 
             with st.spinner(
                 "Professor is responding..."
@@ -432,7 +486,9 @@ elif st.session_state.page == "Case Lab":
 
             if "error" in answer:
 
-                st.error(answer["error"])
+                st.error(
+                    answer["error"]
+                )
 
             else:
 
@@ -452,9 +508,10 @@ elif st.session_state.page == "Case Lab":
 
                 st.rerun()
 
-        # ------------------------------------------
+
+        # =================================================
         # REASONING REVIEW
-        # ------------------------------------------
+        # =================================================
 
         reasoning = st.text_area(
             "Your clinical reasoning / final thoughts"
@@ -496,9 +553,10 @@ elif st.session_state.page == "Case Lab":
                         )
                     )
 
-        # ------------------------------------------
+
+        # =================================================
         # DISPLAY REVIEW
-        # ------------------------------------------
+        # =================================================
 
         if st.session_state.review:
 
