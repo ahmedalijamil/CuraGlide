@@ -6,14 +6,13 @@ from core.case_lab import (
     generate_case,
     review_reasoning,
 )
-
 from core.hospital_finder import find_hospitals
 from core.patient_mode import render_patient_mode
 
 
-# ==============================
+# =================================================
 # PAGE CONFIG
-# ==============================
+# =================================================
 
 st.set_page_config(
     page_title="CuraGlide",
@@ -22,9 +21,9 @@ st.set_page_config(
 )
 
 
-# ==============================
+# =================================================
 # CURAGLIDE GLOBAL THEME
-# ==============================
+# =================================================
 
 st.markdown("""
 <style>
@@ -43,8 +42,6 @@ st.markdown("""
         );
     color: #F5FFFF;
 }
-
-/* Main content */
 
 .main {
     background: transparent;
@@ -94,15 +91,15 @@ p, label, span {
             135deg,
             #D62828,
             #B91C1C
-        );
+        ) !important;
 
-    color: white !important;
+    color: #FFFFFF !important;
 
-    border: 2px solid #FF6B6B;
+    border: 2px solid #FF6B6B !important;
 
-    border-radius: 12px;
+    border-radius: 12px !important;
 
-    font-weight: 700;
+    font-weight: 700 !important;
 
     padding: 0.65rem 1rem;
 
@@ -118,7 +115,9 @@ p, label, span {
             135deg,
             #EF4444,
             #C81E1E
-        );
+        ) !important;
+
+    color: #FFFFFF !important;
 
     transform: translateY(-2px);
 
@@ -144,7 +143,7 @@ p, label, span {
 }
 
 .stLinkButton > a:hover {
-    background-color: #000000 !important;
+    background-color: #111111 !important;
     color: #FFFFFF !important;
 }
 
@@ -161,8 +160,10 @@ p, label, span {
     color: #FFFFFF !important;
     -webkit-text-fill-color: #FFFFFF !important;
 
-    border: 1px solid rgba(150, 255, 245, 0.35) !important;
-    border-radius: 10px;
+    border:
+        1px solid rgba(150, 255, 245, 0.35) !important;
+
+    border-radius: 10px !important;
 }
 
 .stTextInput input:focus,
@@ -176,9 +177,9 @@ p, label, span {
     border: 2px solid #5EEAD4 !important;
 
     box-shadow:
-        0 0 12px
-        rgba(94, 234, 212, 0.25);
+        0 0 12px rgba(94, 234, 212, 0.25);
 }
+
 
 /* Placeholder */
 
@@ -194,12 +195,12 @@ p, label, span {
 
 div[data-baseweb="select"] > div {
     background-color:
-        rgba(255, 255, 255, 0.10);
+        rgba(255, 255, 255, 0.10) !important;
 
     border-color:
-        rgba(150, 255, 245, 0.35);
+        rgba(150, 255, 245, 0.35) !important;
 
-    color: white;
+    color: #FFFFFF !important;
 }
 
 
@@ -212,14 +213,12 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
         rgba(4, 31, 43, 0.55);
 
     border:
-        1px solid
-        rgba(94, 234, 212, 0.20);
+        1px solid rgba(94, 234, 212, 0.20);
 
     border-radius: 16px;
 
     box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.20);
+        0 10px 30px rgba(0, 0, 0, 0.20);
 }
 
 
@@ -248,7 +247,7 @@ div[data-testid="stProgress"] > div > div {
 
 
 /* =========================
-   SUCCESS
+   ALERTS
    ========================= */
 
 div[data-testid="stAlert"][data-baseweb="notification"] {
@@ -277,9 +276,9 @@ code {
 """, unsafe_allow_html=True)
 
 
-# ==============================
+# =================================================
 # SESSION STATE
-# ==============================
+# =================================================
 
 if "page" not in st.session_state:
     st.session_state.page = "Home"
@@ -294,18 +293,18 @@ if "review" not in st.session_state:
     st.session_state.review = None
 
 
-# ==============================
+# =================================================
 # NAVIGATION
-# ==============================
+# =================================================
 
-def navigate(page):
-    st.session_state.page = page
+def navigate(page_name):
+    st.session_state.page = page_name
     st.rerun()
 
 
-# ==============================
+# =================================================
 # SIDEBAR
-# ==============================
+# =================================================
 
 with st.sidebar:
 
@@ -319,32 +318,39 @@ with st.sidebar:
 
     if st.button(
         "🏠 Home",
-        use_container_width=True
+        use_container_width=True,
     ):
         navigate("Home")
 
     if st.button(
         "👤 Patient Mode",
-        use_container_width=True
+        use_container_width=True,
     ):
         navigate("Patient Mode")
 
     if st.button(
         "🏥 Hospital Finder",
-        use_container_width=True
+        use_container_width=True,
     ):
         navigate("Hospital Finder")
 
     if st.button(
         "🧪 Case Lab",
-        use_container_width=True
+        use_container_width=True,
     ):
         navigate("Case Lab")
 
+    st.divider()
 
-# ==============================
+    st.caption(
+        "Health information and education only — "
+        "not a replacement for professional medical care."
+    )
+
+
+# =================================================
 # HOME
-# ==============================
+# =================================================
 
 if st.session_state.page == "Home":
 
@@ -370,12 +376,12 @@ if st.session_state.page == "Home":
 
         st.write(
             "Answer simple questions about your health and receive "
-            "an AI-generated health-information analysis."
+            "AI-generated health-information guidance."
         )
 
         if st.button(
             "Open Patient Mode →",
-            use_container_width=True
+            use_container_width=True,
         ):
             navigate("Patient Mode")
 
@@ -390,7 +396,7 @@ if st.session_state.page == "Home":
 
         if st.button(
             "Open Hospital Finder →",
-            use_container_width=True
+            use_container_width=True,
         ):
             navigate("Hospital Finder")
 
@@ -409,7 +415,7 @@ if st.session_state.page == "Home":
 
         if st.button(
             "Open Case Lab →",
-            use_container_width=True
+            use_container_width=True,
         ):
             navigate("Case Lab")
 
@@ -423,18 +429,18 @@ if st.session_state.page == "Home":
         )
 
 
-# ==============================
+# =================================================
 # PATIENT MODE
-# ==============================
+# =================================================
 
 elif st.session_state.page == "Patient Mode":
 
     render_patient_mode()
 
 
-# ==============================
+# =================================================
 # HOSPITAL FINDER
-# ==============================
+# =================================================
 
 elif st.session_state.page == "Hospital Finder":
 
@@ -446,12 +452,12 @@ elif st.session_state.page == "Hospital Finder":
 
     location = st.text_input(
         "Location",
-        placeholder="Enter city, area, or location"
+        placeholder="Enter city, area, or location",
     )
 
     if st.button(
         "🔎 Find Hospitals",
-        use_container_width=True
+        use_container_width=True,
     ):
 
         if not location.strip():
@@ -472,7 +478,7 @@ elif st.session_state.page == "Hospital Finder":
 
                 hospitals = result.get(
                     "hospitals",
-                    []
+                    [],
                 )
 
                 if hospitals:
@@ -487,12 +493,12 @@ elif st.session_state.page == "Hospital Finder":
 
                             name = hospital.get(
                                 "name",
-                                "Hospital"
+                                "Hospital",
                             )
 
                             address = hospital.get(
                                 "address",
-                                "Address unavailable"
+                                "Address unavailable",
                             )
 
                             latitude = hospital.get(
@@ -524,8 +530,9 @@ elif st.session_state.page == "Hospital Finder":
                                 )
 
                                 st.link_button(
-                                    "Open directions",
-                                    maps_url
+                                    "🧭 Open directions",
+                                    maps_url,
+                                    use_container_width=True,
                                 )
 
                 else:
@@ -539,204 +546,395 @@ elif st.session_state.page == "Hospital Finder":
                 st.error(
                     result.get(
                         "error",
-                        "Unable to find hospitals."
+                        "Unable to find hospitals.",
                     )
                 )
 
 
-# ==============================
+# =================================================
 # CASE LAB
-# ==============================
+# =================================================
 
 elif st.session_state.page == "Case Lab":
 
     st.title("🧪 Case Lab")
 
-    st.write(
-        "Practice clinical-style reasoning through educational cases."
+    st.warning(
+        "⚠️ Educational use only. "
+        "Cases are fictional and not clinical advice."
     )
+
+    # =============================================
+    # CREATE CASE
+    # =============================================
 
     if st.session_state.case is None:
 
         st.subheader("Create a Case")
 
-        topic = st.selectbox(
-            "Medical topic",
-            [
-                "General Medicine",
-                "Cardiology",
-                "Respiratory",
-                "Neurology",
-                "Gastroenterology",
-                "Pediatrics",
-                "Emergency Medicine",
-            ]
-        )
+        col1, col2 = st.columns(2)
 
-        difficulty = st.selectbox(
-            "Difficulty",
-            [
-                "Beginner",
-                "Intermediate",
-                "Advanced",
-            ]
-        )
+        with col1:
 
-        case_type = st.selectbox(
-            "Case type",
-            [
-                "Diagnosis",
-                "Differential Diagnosis",
-                "Clinical Reasoning",
-            ]
-        )
-
-        custom_request = st.text_area(
-            "Optional custom request",
-            placeholder="Example: Create a case about a patient with chest pain..."
-        )
-
-        if st.button(
-            "🧪 Generate Case",
-            use_container_width=True
-        ):
-
-            with st.spinner(
-                "Generating educational case..."
-            ):
-
-                result = generate_case(
-                    topic=topic,
-                    difficulty=difficulty,
-                    case_type=case_type,
-                    custom_request=custom_request,
-                )
-
-            if result.get("success"):
-
-                st.session_state.case = result.get(
-                    "case"
-                )
-
-                st.session_state.conversation = []
-
-                st.session_state.review = None
-
-                st.rerun()
-
-            else:
-
-                st.error(
-                    result.get(
-                        "error",
-                        "Unable to generate case."
-                    )
-                )
-
-    else:
-
-        case = st.session_state.case
-
-        st.subheader(
-            case.get(
-                "title",
-                "Clinical Case"
-            )
-        )
-
-        for key, value in case.items():
-
-            if key == "title":
-                continue
-
-            if value is None:
-                continue
-
-            label = key.replace(
-                "_",
-                " "
-            ).title()
-
-            st.markdown(
-                f"**{label}:**"
+            topic = st.text_input(
+                "Topic",
+                placeholder=(
+                    "Neurology, cardiology, respiratory..."
+                ),
             )
 
-            st.write(value)
+            difficulty = st.selectbox(
+                "Difficulty",
+                [
+                    "Beginner",
+                    "Intermediate",
+                    "Advanced",
+                ],
+            )
 
-        st.divider()
+        with col2:
 
-        st.subheader("💬 Ask About the Case")
+            case_type = st.selectbox(
+                "Case type",
+                [
+                    "Diagnostic mystery",
+                    "Emergency presentation",
+                    "Patient interview",
+                    "Clinical reasoning challenge",
+                    "Differential diagnosis",
+                ],
+            )
 
-        question = st.text_area(
-            "Your question",
-            placeholder="Ask a question about the case...",
-            key="case_question"
-        )
+            custom_request = st.text_area(
+                "Optional custom request",
+                placeholder=(
+                    "Add any specific scenario or learning goal..."
+                ),
+            )
 
         if st.button(
-            "Ask Question",
-            use_container_width=True
+            "🚀 Generate New Case",
+            type="primary",
+            use_container_width=True,
         ):
 
-            if not question.strip():
+            if not topic.strip():
 
                 st.warning(
-                    "Please enter a question first."
+                    "Please enter a topic."
                 )
 
             else:
 
                 with st.spinner(
-                    "Thinking..."
+                    "Generating fictional case..."
                 ):
 
-                    answer = answer_student_question(
-                        case,
-                        question,
-                        st.session_state.conversation
+                    result = generate_case(
+                        topic,
+                        difficulty,
+                        case_type,
+                        custom_request,
                     )
 
-                st.session_state.conversation.append(
-                    {
-                        "user": question,
-                        "assistant": answer,
-                    }
+                if "error" in result:
+
+                    st.error(
+                        result["error"]
+                    )
+
+                else:
+
+                    st.session_state.case = result.get(
+                        "case"
+                    )
+
+                    st.session_state.conversation = []
+
+                    st.session_state.review = None
+
+                    st.rerun()
+
+
+    # =============================================
+    # DISPLAY CASE — CLEAN VERSION
+    # =============================================
+
+    else:
+
+        case = st.session_state.case
+
+        st.divider()
+
+        st.subheader(
+            case.get(
+                "title",
+                "Fictional Case",
+            )
+        )
+
+
+        # Professor introduction
+
+        professor_intro = case.get(
+            "professor_intro",
+            "",
+        )
+
+        if professor_intro:
+
+            st.info(
+                professor_intro
+            )
+
+
+        # Patient
+
+        patient = case.get(
+            "patient",
+            {},
+        )
+
+        if patient:
+
+            st.markdown(
+                "### 👤 Patient"
+            )
+
+            description = patient.get(
+                "description",
+                "",
+            )
+
+            if description:
+
+                st.markdown(
+                    f"**Patient:** {description}"
                 )
 
-                st.rerun()
+            opening_presentation = patient.get(
+                "opening_presentation",
+                "",
+            )
+
+            if opening_presentation:
+
+                st.write(
+                    opening_presentation
+                )
+
+
+        # Initial information
+
+        initial_information = case.get(
+            "initial_information",
+            [],
+        )
+
+        if initial_information:
+
+            st.markdown(
+                "### 📋 Initial Information"
+            )
+
+            for item in initial_information:
+
+                st.write(
+                    f"• {item}"
+                )
+
+
+        # Possible explanations
+
+        possible_explanations = case.get(
+            "possible_explanations",
+            [],
+        )
+
+        if possible_explanations:
+
+            st.markdown(
+                "### 🔍 Possible Explanations"
+            )
+
+            for item in possible_explanations:
+
+                st.write(
+                    f"• {item}"
+                )
+
+
+        # Warning signs
+
+        warning_signs = case.get(
+            "warning_signs",
+            [],
+        )
+
+        if warning_signs:
+
+            st.markdown(
+                "### ⚠️ Important Warning Signs"
+            )
+
+            for item in warning_signs:
+
+                st.write(
+                    f"• {item}"
+                )
+
+
+        # Professor hints
+
+        professor_hints = case.get(
+            "professor_hints",
+            [],
+        )
+
+        if professor_hints:
+
+            with st.expander(
+                "💡 Professor Hints"
+            ):
+
+                for item in professor_hints:
+
+                    st.write(
+                        f"• {item}"
+                    )
+
+
+        # =========================================
+        # CONVERSATION HISTORY
+        # =========================================
 
         if st.session_state.conversation:
 
             st.divider()
 
-            st.subheader("Conversation")
+            st.subheader(
+                "💬 Conversation"
+            )
 
-            for message in st.session_state.conversation:
-
-                st.markdown(
-                    f"**You:** {message['user']}"
-                )
+            for item in st.session_state.conversation:
 
                 st.markdown(
-                    f"**Case Lab:** {message['assistant']}"
+                    f"**You:** {item.get('q', '')}"
                 )
+
+                st.write(
+                    "**Professor:** "
+                    + item.get(
+                        "a",
+                        "",
+                    )
+                )
+
+                teaching_point = item.get(
+                    "teaching_point",
+                    "",
+                )
+
+                if teaching_point:
+
+                    st.info(
+                        f"💡 Teaching point: "
+                        f"{teaching_point}"
+                    )
 
                 st.divider()
 
-        st.subheader("🧠 Review Your Reasoning")
+
+        # =========================================
+        # ASK PROFESSOR
+        # =========================================
+
+        st.subheader(
+            "💬 Ask the Professor"
+        )
+
+        question = st.text_input(
+            "Ask the professor a question",
+            key="case_question",
+        )
+
+        if (
+            st.button(
+                "Ask Question",
+                use_container_width=True,
+            )
+            and question.strip()
+        ):
+
+            with st.spinner(
+                "Professor is responding..."
+            ):
+
+                answer = answer_student_question(
+                    case,
+                    question,
+                    st.session_state.conversation,
+                )
+
+            if isinstance(answer, dict) and "error" in answer:
+
+                st.error(
+                    answer["error"]
+                )
+
+            else:
+
+                if isinstance(answer, dict):
+
+                    answer_text = answer.get(
+                        "answer",
+                        "",
+                    )
+
+                    teaching_point = answer.get(
+                        "teaching_point",
+                        "",
+                    )
+
+                else:
+
+                    answer_text = str(answer)
+
+                    teaching_point = ""
+
+                st.session_state.conversation.append(
+                    {
+                        "q": question,
+                        "a": answer_text,
+                        "teaching_point": teaching_point,
+                    }
+                )
+
+                st.rerun()
+
+
+        # =========================================
+        # REASONING REVIEW
+        # =========================================
+
+        st.divider()
+
+        st.subheader(
+            "🧠 Review Your Reasoning"
+        )
 
         reasoning = st.text_area(
-            "Explain your reasoning",
+            "Your clinical reasoning / final thoughts",
             placeholder=(
-                "What do you think is happening, "
-                "and why?"
+                "Explain what you think is happening "
+                "and why..."
             ),
-            key="reasoning_input"
+            key="reasoning_input",
         )
 
         if st.button(
-            "🔍 Review Reasoning",
-            use_container_width=True
+            "🎓 Get Professor Review",
+            use_container_width=True,
         ):
 
             if not reasoning.strip():
@@ -748,35 +946,135 @@ elif st.session_state.page == "Case Lab":
             else:
 
                 with st.spinner(
-                    "Reviewing your reasoning..."
+                    "Reviewing reasoning..."
                 ):
 
-                    review = review_reasoning(
+                    review_result = review_reasoning(
                         case,
-                        reasoning
+                        reasoning,
+                        st.session_state.conversation,
                     )
 
-                st.session_state.review = review
+                if (
+                    isinstance(review_result, dict)
+                    and "error" in review_result
+                ):
 
-                st.rerun()
+                    st.error(
+                        review_result["error"]
+                    )
+
+                else:
+
+                    if isinstance(review_result, dict):
+
+                        st.session_state.review = (
+                            review_result.get(
+                                "review",
+                                review_result,
+                            )
+                        )
+
+                    else:
+
+                        st.session_state.review = (
+                            review_result
+                        )
+
+                    st.rerun()
+
+
+        # =========================================
+        # DISPLAY REVIEW — CLEAN VERSION
+        # =========================================
 
         if st.session_state.review:
 
             st.divider()
 
             st.subheader(
-                "📋 Reasoning Review"
+                "🎓 Professor Review"
             )
 
-            st.write(
-                st.session_state.review
-            )
+            review = st.session_state.review
+
+            if isinstance(review, dict):
+
+                overall_feedback = review.get(
+                    "overall_feedback",
+                    "",
+                )
+
+                if overall_feedback:
+
+                    st.write(
+                        overall_feedback
+                    )
+
+
+                sections = [
+                    (
+                        "✅ What Went Well",
+                        "what_went_well",
+                    ),
+                    (
+                        "📝 What Was Missed",
+                        "what_was_missed",
+                    ),
+                    (
+                        "⚠️ Important Warning Signs",
+                        "important_warning_signs",
+                    ),
+                ]
+
+                for title, key in sections:
+
+                    items = review.get(
+                        key,
+                        [],
+                    )
+
+                    if items:
+
+                        st.markdown(
+                            f"### {title}"
+                        )
+
+                        for item in items:
+
+                            st.write(
+                                f"• {item}"
+                            )
+
+
+                key_lesson = review.get(
+                    "key_lesson",
+                    "",
+                )
+
+                if key_lesson:
+
+                    st.info(
+                        f"💡 Key lesson: "
+                        f"{key_lesson}"
+                    )
+
+            else:
+
+                st.write(
+                    str(review)
+                )
+
+
+        # =========================================
+        # START NEW CASE
+        # =========================================
 
         st.divider()
 
         if st.button(
             "🔄 Start New Case",
-            use_container_width=True
+            use_container_width=True,
         ):
 
             st.session_state.case = None
